@@ -70,7 +70,6 @@ abstract class BaseVmDbActivity<VM : BaseViewModel, DB : ViewDataBinding> : AppC
         return ViewModelProvider(this)[getVmClazz(this) as Class<VM>]
     }
 
-
     /**
      * 创建观察者
      */

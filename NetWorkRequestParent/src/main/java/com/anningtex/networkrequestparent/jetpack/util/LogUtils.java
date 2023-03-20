@@ -7,7 +7,7 @@ import android.util.Log;
  * @author Song
  */
 public class LogUtils {
-    private static final String DEFAULT_TAG = "JetpackMvvm";
+    private static final String DEFAULT_TAG = "SongMvvm";
     private static boolean isLog = true;
 
     private LogUtils() {

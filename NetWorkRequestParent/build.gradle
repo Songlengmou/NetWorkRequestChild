@@ -51,15 +51,15 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.0-alpha04"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.0-alpha04"
     //glide
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    api 'com.github.bumptech.glide:glide:4.11.0'
     //retrofit + PersistentCookieJar
-    implementation "com.squareup.retrofit2:retrofit:2.6.2"
-    implementation "com.squareup.retrofit2:converter-gson:2.6.2"
-    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+    api "com.squareup.retrofit2:retrofit:2.6.2"
+    api "com.squareup.retrofit2:converter-gson:2.6.2"
+    api 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     //权限库rxPermissions
-    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    api 'com.github.tbruyelle:rxpermissions:0.10.2'
     //屏幕适配
-    implementation 'me.jessyan:autosize:1.2.0'
+    api 'me.jessyan:autosize:1.2.0'
     //防崩溃
-    implementation 'cat.ereza:customactivityoncrash:2.2.0'
+    api 'cat.ereza:customactivityoncrash:2.2.0'
 }

@@ -1,6 +1,7 @@
 package com.anningtex.networkrequestparent.jetpack.network.interceptor.logging;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.anningtex.networkrequestparent.jetpack.util.CharacterHandler;
 import com.anningtex.networkrequestparent.jetpack.util.LogUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -17,7 +19,7 @@ import okhttp3.Request;
  * @author Song
  */
 public class DefaultFormatPrinter implements FormatPrinter {
-    private static final String TAG = "JetpackSongLog";
+    private static final String TAG = "TAGSongLog";
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
     private static final String DOUBLE_SEPARATOR = LINE_SEPARATOR + LINE_SEPARATOR;
 
@@ -40,7 +42,7 @@ public class DefaultFormatPrinter implements FormatPrinter {
     private static final String CENTER_LINE = "├ ";
     private static final String DEFAULT_LINE = "│ ";
     private static final String[] ARMS = new String[]{"-A-", "-R-", "-M-", "-S-"};
-    private static ThreadLocal<Integer> last = new ThreadLocal<Integer>() {
+    private static final ThreadLocal<Integer> last = new ThreadLocal<Integer>() {
         @Override
         protected Integer initialValue() {
             return 0;
@@ -65,7 +67,7 @@ public class DefaultFormatPrinter implements FormatPrinter {
             for (int i = 0; i <= lineLength / maxLongSize; i++) {
                 int start = i * maxLongSize;
                 int end = (i + 1) * maxLongSize;
-                end = end > line.length() ? line.length() : end;
+                end = Math.min(end, line.length());
                 LogUtils.debugInfo(resolveTag(tag), DEFAULT_LINE + line.substring(start, end));
             }
         }
@@ -100,6 +102,7 @@ public class DefaultFormatPrinter implements FormatPrinter {
         String log;
         String header = request.headers().toString();
         log = METHOD_TAG + request.method() + DOUBLE_SEPARATOR + (isEmpty(header) ? "" : HEADERS_TAG + LINE_SEPARATOR + dotHeaders(header));
+        assert LINE_SEPARATOR != null;
         return log.split(LINE_SEPARATOR);
     }
 
@@ -107,6 +110,7 @@ public class DefaultFormatPrinter implements FormatPrinter {
         String log;
         String segmentString = slashSegments(segments);
         log = ((!TextUtils.isEmpty(segmentString) ? segmentString + " - " : "") + "is success : " + isSuccessful + " - " + RECEIVED_TAG + tookMs + "ms" + DOUBLE_SEPARATOR + STATUS_CODE_TAG + code + " / " + message + DOUBLE_SEPARATOR + (isEmpty(header) ? "" : HEADERS_TAG + LINE_SEPARATOR + dotHeaders(header)));
+        assert LINE_SEPARATOR != null;
         return log.split(LINE_SEPARATOR);
     }
 
@@ -171,6 +175,10 @@ public class DefaultFormatPrinter implements FormatPrinter {
         logLines(tag, getRequest(request), true);
         logLines(tag, requestBody.split(LINE_SEPARATOR), true);
         LogUtils.debugInfo(tag, END_LINE);
+
+        Log.e(tag, Arrays.toString(new String[]{URL_TAG + request.url()}));
+        Log.e(tag, Arrays.toString(getRequest(request)));
+        Log.e(tag, Arrays.toString(requestBody.split(LINE_SEPARATOR)));
     }
 
     /**
@@ -187,6 +195,10 @@ public class DefaultFormatPrinter implements FormatPrinter {
         logLines(tag, getRequest(request), true);
         logLines(tag, OMITTED_REQUEST, true);
         LogUtils.debugInfo(tag, END_LINE);
+
+        Log.e(tag, Arrays.toString(new String[]{URL_TAG + request.url()}));
+        Log.e(tag, Arrays.toString(getRequest(request)));
+        Log.e(tag, Arrays.toString(OMITTED_REQUEST));
     }
 
     /**
@@ -213,6 +225,7 @@ public class DefaultFormatPrinter implements FormatPrinter {
         LogUtils.debugInfo(tag, RESPONSE_UP_LINE);
         logLines(tag, urlLine, true);
         logLines(tag, getResponse(headers, chainMs, code, isSuccessful, segments, message), true);
+        assert LINE_SEPARATOR != null;
         logLines(tag, responseBody.split(LINE_SEPARATOR), true);
         LogUtils.debugInfo(tag, END_LINE);
     }

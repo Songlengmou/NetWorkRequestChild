@@ -1,5 +1,6 @@
 package com.anningtex.networkrequestparent.jetpack.ext
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.anningtex.networkrequestparent.jetpack.*
@@ -157,10 +158,12 @@ fun <T> BaseViewModel.request(
             if (isShowDialog) resultState.value = ResultState.onAppLoading(loadingMessage)
             withContext(Dispatchers.IO) { block() }
         }.onSuccess {
-            it.toJson().logd("hgj")
+            it.toJson().logd("TAG")
+            Log.e("TAG_request", it.toJson())
             resultState.paresResult(it)
         }.onFailure {
-            it.message?.loge("JetpackMvvm")
+            it.message?.loge("TAGSongMvvm")
+            it.message?.let { it1 -> Log.e("TAG_request: ", it1) }
             resultState.paresException(it)
         }
     }
@@ -186,7 +189,7 @@ fun <T> BaseViewModel.requestNoCheck(
         }.onSuccess {
             resultState.paresResult(it)
         }.onFailure {
-            it.message?.loge("JetpackMvvm")
+            it.message?.loge("TAGSongMvvm")
             resultState.paresException(it)
         }
     }
@@ -221,7 +224,7 @@ fun <T> BaseViewModel.request(
                 executeResponse(it) { tIt -> success(tIt) }
             } catch (e: Exception) {
                 //打印错误消息
-                e.message?.loge("JetpackMvvm")
+                e.message?.loge("TAGSongMvvm")
                 //失败回调
                 error(ExceptionHandle.handleException(e))
             }
@@ -229,7 +232,7 @@ fun <T> BaseViewModel.request(
             //网络请求异常 关闭弹窗
             uiChange.dismissDialog.call()
             //打印错误消息
-            it.message?.loge("JetpackMvvm")
+            it.message?.loge("TAGSongMvvm")
             //失败回调
             error(ExceptionHandle.handleException(it))
         }
@@ -266,7 +269,7 @@ fun <T> BaseViewModel.requestNoCheck(
             //网络请求异常 关闭弹窗
             uiChange.dismissDialog.call()
             //打印错误消息
-            it.message?.loge("JetpackMvvm")
+            it.message?.loge("TAGSongMvvm")
             //失败回调
             error(ExceptionHandle.handleException(it))
         }
@@ -280,7 +283,7 @@ suspend fun <T> BaseViewModel.executeResponse(
     response: BaseResponse<T>, success: suspend CoroutineScope.(T) -> Unit
 ) {
     coroutineScope {
-        if (response.isSucces()) success(response.getResponseData())
+        if (response.isSuccess()) success(response.getResponseData())
         else throw AppException(
             response.getResponseCode(), response.getResponseMsg(), response.getResponseMsg()
         )

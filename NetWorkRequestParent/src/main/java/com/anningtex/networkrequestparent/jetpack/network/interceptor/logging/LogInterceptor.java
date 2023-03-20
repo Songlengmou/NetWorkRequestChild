@@ -53,15 +53,15 @@ public class LogInterceptor implements Interceptor {
             if (body == null) {
                 return "";
             }
-            Buffer requestbuffer = new Buffer();
-            body.writeTo(requestbuffer);
+            Buffer requestBuffer = new Buffer();
+            body.writeTo(requestBuffer);
             Charset charset = StandardCharsets.UTF_8;
             MediaType contentType = body.contentType();
             if (contentType != null) {
                 charset = contentType.charset(charset);
             }
             assert charset != null;
-            String json = requestbuffer.readString(charset);
+            String json = requestBuffer.readString(charset);
             if (UrlEncoderUtils.hasUrlEncoded(json)) {
                 json = URLDecoder.decode(json, convertCharset(charset));
             }

@@ -8,14 +8,14 @@ import kotlin.properties.Delegates
 
 class MyApplication : BaseApp() {
     companion object {
-        var CONTEXT: Context by Delegates.notNull()
+        var mContext: Context by Delegates.notNull()
     }
 
     override fun onCreate() {
         super.onCreate()
-        CONTEXT = applicationContext
+        mContext = applicationContext
 
-        MMKV.initialize(this.filesDir.absolutePath + "/mmkv")
+        MMKV.initialize(this)
 
         //防止项目崩溃，崩溃后打开错误界面
         CaocConfig.Builder.create()

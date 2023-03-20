@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    //config
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -87,4 +90,5 @@ dependencies {
     implementation 'com.just.agentweb:agentweb:4.1.2'
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'cat.ereza:customactivityoncrash:2.2.0'
+    implementation 'org.jetbrains.anko:anko-commons:0.10.4'
 }
